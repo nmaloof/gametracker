@@ -2,8 +2,8 @@ package gametracker.http
 
 import gametracker.domain.*
 
-import io.circe.{Decoder, Encoder}
 import io.circe.generic.semiauto.*
+import io.circe.{Decoder, Encoder}
 
 private object Codecs {
 

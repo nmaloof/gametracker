@@ -3,8 +3,8 @@ package gametracker.repository
 import gametracker.algebras.PlayerAlg
 import gametracker.domain.Player
 
-import cats.effect.IO
 import cats.data.OptionT
+import cats.effect.IO
 import cats.implicits.*
 import doobie.*
 import doobie.implicits.*

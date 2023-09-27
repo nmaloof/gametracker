@@ -1,12 +1,11 @@
 package gametracker
 
 import gametracker.domain.*
-import gametracker.repository.MatchSQL
-import gametracker.repository.MatchRepo
+import gametracker.repository.{MatchRepo, MatchSQL}
 
-import munit.*
 import cats.effect.IO
 import doobie.Transactor
+import munit.*
 
 class RepoTests extends CatsEffectSuite with doobie.munit.IOChecker {
 

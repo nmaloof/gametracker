@@ -2,16 +2,15 @@ package gametracker
 
 import gametracker.modules.HttpApi
 
-import cats.effect.{IO, IOApp, ExitCode}
-import org.http4s.ember.server.EmberServerBuilder
+import cats.effect.{ExitCode, IO, IOApp}
 import com.comcast.ip4s.{ipv4, port}
-import org.typelevel.log4cats.{LoggerFactory, slf4j}
+import doobie.util.log.{LogEvent, LogHandler}
 import doobie.util.transactor.Transactor
 import fly4s.core.Fly4s
-import fly4s.implicits.{given}
 import fly4s.core.data.{Fly4sConfig, Locations, ValidatePattern}
-import doobie.util.log.LogHandler
-import doobie.util.log.LogEvent
+import fly4s.implicits.{given}
+import org.http4s.ember.server.EmberServerBuilder
+import org.typelevel.log4cats.{LoggerFactory, slf4j}
 
 object Main extends IOApp {
 

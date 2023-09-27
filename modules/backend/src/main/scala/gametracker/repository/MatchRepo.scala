@@ -7,6 +7,7 @@ import cats.data.OptionT
 import cats.effect.IO
 import doobie.*
 import doobie.implicits.*
+
 import Fragments.whereAndOpt
 
 class MatchRepo(xa: Transactor[IO]) extends MatchAlg {

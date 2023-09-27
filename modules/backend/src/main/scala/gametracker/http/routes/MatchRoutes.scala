@@ -5,10 +5,10 @@ import gametracker.http.Codecs.given
 
 import cats.effect.IO
 import org.http4s.HttpRoutes
-import org.http4s.dsl.Http4sDsl
-import org.http4s.server.Router
 import org.http4s.circe.CirceEntityCodec.*
+import org.http4s.dsl.Http4sDsl
 import org.http4s.dsl.impl.QueryParamDecoderMatcher
+import org.http4s.server.Router
 
 class MatchRoutes(mtch: MatchAlg) extends Http4sDsl[IO] {
    private val prefixPath = "/match"

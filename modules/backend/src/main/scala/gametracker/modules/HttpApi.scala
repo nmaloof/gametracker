@@ -1,18 +1,16 @@
 package gametracker.modules
 
-import gametracker.repository.*
 import gametracker.http.routes.*
+import gametracker.repository.*
 
 import cats.effect.IO
 import cats.syntax.all.*
 import doobie.Transactor
 import org.http4s.*
-import org.http4s.implicits.*
 import org.http4s.headers.Origin
-
+import org.http4s.implicits.*
+import org.http4s.server.middleware.{CORS, ErrorAction, RequestLogger}
 import org.typelevel.log4cats.LoggerFactory
-import org.http4s.server.middleware.{RequestLogger, ErrorAction}
-import org.http4s.server.middleware.CORS
 
 final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
 
@@ -28,18 +26,17 @@ final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
 
    private val allRoutes = (gameRoutes.routes <+> playerRoutes.routes <+> matchRoutes.routes)
 
-
-   private val middleware: HttpRoutes[IO] => HttpRoutes[IO] = {
-      (http: HttpRoutes[IO]) => RequestLogger.httpRoutes[IO](
-         logHeaders = true,
-         logBody = true,
-         redactHeadersWhen = _ => false,
-         logAction = Some((msg: String) => IO.println(msg))
+   private val middleware: HttpRoutes[IO] => HttpRoutes[IO] = { (http: HttpRoutes[IO]) =>
+      RequestLogger.httpRoutes[IO](
+        logHeaders = true,
+        logBody = true,
+        redactHeadersWhen = _ => false,
+        logAction = Some((msg: String) => IO.println(msg))
       )(http)
-   } andThen {
-      (http: HttpRoutes[IO]) => ErrorAction.httpRoutes[IO](
-         http,
-         (req, thr) => IO.println(thr.getMessage())
+   } andThen { (http: HttpRoutes[IO]) =>
+      ErrorAction.httpRoutes[IO](
+        http,
+        (req, thr) => IO.println(thr.getMessage())
       )
    }
 

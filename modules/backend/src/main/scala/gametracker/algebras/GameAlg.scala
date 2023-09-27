@@ -2,8 +2,8 @@ package gametracker.algebras
 
 import gametracker.domain.Game
 
-import cats.effect.IO
 import cats.data.OptionT
+import cats.effect.IO
 
 trait GameAlg {
    def findById(id: Long): OptionT[IO, Game]

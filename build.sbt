@@ -3,7 +3,11 @@ import org.scalajs.linker.interface.ModuleSplitStyle
 
 ThisBuild / scalaVersion := "3.3.0"
 ThisBuild / version := "0.1.0-SNAPSHOT"
+
 ThisBuild / semanticdbEnabled := true
+ThisBuild / scalafixDependencies ++= Seq(
+    "org.typelevel" %% "typelevel-scalafix" % "0.2.0"
+)
 
 
 lazy val root = project.in(file(".")).aggregate(backend, frontend)

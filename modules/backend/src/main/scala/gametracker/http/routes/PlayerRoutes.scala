@@ -1,14 +1,14 @@
 package gametracker.http.routes
 
-import gametracker.domain.Player
 import gametracker.algebras.PlayerAlg
+import gametracker.domain.Player
 import gametracker.http.Codecs.given
 
 import cats.effect.IO
 import org.http4s.HttpRoutes
+import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
-import org.http4s.circe.CirceEntityCodec.*
 
 class PlayerRoutes(player: PlayerAlg) extends Http4sDsl[IO] {
    private val prefixPath = "/player"

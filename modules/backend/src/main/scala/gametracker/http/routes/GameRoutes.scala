@@ -1,14 +1,14 @@
 package gametracker.http.routes
 
-import gametracker.domain.Game
 import gametracker.algebras.GameAlg
+import gametracker.domain.Game
 import gametracker.http.Codecs.given
 
 import cats.effect.IO
 import org.http4s.HttpRoutes
+import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
-import org.http4s.circe.CirceEntityCodec.*
 
 class GameRoutes(game: GameAlg) extends Http4sDsl[IO] {
 

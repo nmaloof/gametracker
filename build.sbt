@@ -20,9 +20,9 @@ lazy val backend = project
             "org.typelevel" %% "cats-core" % "2.9.0",
             "org.typelevel" %% "cats-effect" % "3.5.1",
 
-            "org.http4s" %% "http4s-ember-server" % "1.0.0-M40",
-            "org.http4s" %% "http4s-dsl" % "1.0.0-M40",
-            "org.http4s" %% "http4s-circe" % "1.0.0-M40",
+            "org.http4s" %% "http4s-ember-server" % "0.23.23",
+            "org.http4s" %% "http4s-dsl" % "0.23.23",
+            "org.http4s" %% "http4s-circe" % "0.23.23",
         
             "io.circe" %% "circe-core" % "0.14.6",
             "io.circe" %% "circe-generic" % "0.14.6",
@@ -50,7 +50,7 @@ lazy val frontend = project
             "com.raquo" %%% "laminar" % "16.0.0",
             
             // "org.http4s" %%% "http4s-dom" % "0.2.9",
-            "org.http4s" %%% "http4s-ember-client" % "1.0.0-M40",
+            // "org.http4s" %%% "http4s-ember-client" % "0.23.23",
         ),
         scalaJSUseMainModuleInitializer := true,
         scalaJSLinkerConfig ~= {

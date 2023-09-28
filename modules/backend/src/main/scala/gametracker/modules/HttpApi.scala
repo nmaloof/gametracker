@@ -34,12 +34,23 @@ final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
         logAction = Some((msg: String) => IO.println(msg))
       )(http)
    } andThen { (http: HttpRoutes[IO]) =>
+      CORS.policy
+      .withAllowOriginAll
+      .withAllowMethodsAll
+      .withAllowHeadersAll
+      .withAllowCredentials(false)
+      .apply(http)
+   } andThen { (http: HttpRoutes[IO]) =>
       ErrorAction.httpRoutes[IO](
         http,
         (req, thr) => IO.println(thr.getMessage())
       )
    }
 
+   // withAllowOriginHost(Set(
+   //       Origin.Host(Uri.Scheme.https, Uri.RegName("localhost"), Some(8080)),
+   //       Origin.Host(Uri.Scheme.http, Uri.RegName("localhost"), Some(8080))
+   //    ))
    // private val corsService = CORS.policy.withAllowOriginAll.apply(errorReq.orNotFound)
    // private val corsService = CORS.policy.withAllowOriginHost(
    //      Set(

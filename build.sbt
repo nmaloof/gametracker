@@ -48,7 +48,14 @@ lazy val frontend = project
             "org.scala-js" %%% "scalajs-dom" % "2.7.0",
 
             "com.raquo" %%% "laminar" % "16.0.0",
-            
+
+            "io.laminext" %%% "fetch" % "0.16.2",
+            "io.laminext" %%% "fetch-circe" % "0.16.2",
+
+            "io.circe" %%% "circe-core" % "0.14.6",
+            "io.circe" %%% "circe-generic" % "0.14.6",
+
+
             // "org.http4s" %%% "http4s-dom" % "0.2.9",
             // "org.http4s" %%% "http4s-ember-client" % "0.23.23",
         ),

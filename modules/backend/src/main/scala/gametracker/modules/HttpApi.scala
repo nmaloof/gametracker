@@ -34,12 +34,9 @@ final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
         logAction = Some((msg: String) => IO.println(msg))
       )(http)
    } andThen { (http: HttpRoutes[IO]) =>
-      CORS.policy
-      .withAllowOriginAll
-      .withAllowMethodsAll
-      .withAllowHeadersAll
-      .withAllowCredentials(false)
-      .apply(http)
+      CORS.policy.withAllowOriginAll.withAllowMethodsAll.withAllowHeadersAll
+         .withAllowCredentials(false)
+         .apply(http)
    } andThen { (http: HttpRoutes[IO]) =>
       ErrorAction.httpRoutes[IO](
         http,

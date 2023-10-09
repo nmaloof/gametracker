@@ -26,6 +26,7 @@ class MatchRoutes(mtch: MatchAlg) extends Http4sDsl[IO] {
             case (None, None) => BadRequest("Please specify a search parameter")
             case _            => mtch.findBy(playerId, gameId).foldF(NotFound())(Ok(_))
          }
+
    }
 
    val routes = Router(prefixPath -> httpRoutes)

@@ -6,14 +6,19 @@ import gametracker.SearchBox.Game
 
 object GameComponent {
   def render(searchResults: Signal[List[Game]]): Element = {
-    def gameRender(game: Game): Element = div(
-        p(s"ID: ${game.id}"),
-        p(s"Name: ${game.name}")
+    def gameRender(game: Game): Element = li(
+        div(
+            p(s"ID: ${game.id}"),
+            p(s"Name: ${game.name}")
+        )
     )
 
 
     div(
-        children <-- searchResults.map(lg => lg.map(gameRender))
+        cls := "container",
+        ul(
+            children <-- searchResults.map(lg => lg.map(gameRender))
+        )
     )
   }
 

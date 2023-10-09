@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+li {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

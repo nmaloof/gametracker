@@ -1,6 +1,6 @@
 package gametracker.algebras
 
-import gametracker.domain.Game
+import gametracker.domain.{Game, GameParam}
 
 import cats.data.OptionT
 import cats.effect.IO
@@ -10,7 +10,7 @@ trait GameAlg {
 
    def findAll(): IO[List[Game]]
 
-   def insert(game: Game): IO[Either[Error, Unit]]
+   def insert(game: GameParam): IO[Either[Error, Unit]]
 
    def delete(id: Long): IO[Unit]
 }

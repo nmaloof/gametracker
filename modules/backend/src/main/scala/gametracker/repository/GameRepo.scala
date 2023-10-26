@@ -1,7 +1,7 @@
 package gametracker.repository
 
 import gametracker.algebras.GameAlg
-import gametracker.domain.Game
+import gametracker.domain.{Game, GameParam}
 
 import cats.*
 import cats.data.*
@@ -17,7 +17,7 @@ class GameRepo(xa: Transactor[IO]) extends GameAlg {
 
    override def findAll(): IO[List[Game]] = baseSelect.query[Game].to[List].transact(xa)
 
-   override def insert(game: Game): IO[Either[Error, Unit]] = {
+   override def insert(game: GameParam): IO[Either[Error, Unit]] = {
       insert_(game).run.void.attemptSql
          .map { f =>
             f.leftMap(ex => Error(ex.getMessage()))
@@ -36,5 +36,5 @@ private object GameSQL {
 
    def delete_(id: Long): Update0 = sql"delete from game where id=$id".update
 
-   def insert_(game: Game): Update0 = sql"insert into game (id, name) values (${game.id}, ${game.name})".update
+   def insert_(game: GameParam): Update0 = sql"insert into game (name) values (${game.name})".update
 }

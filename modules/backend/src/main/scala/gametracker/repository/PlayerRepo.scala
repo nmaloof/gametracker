@@ -1,7 +1,7 @@
 package gametracker.repository
 
 import gametracker.algebras.PlayerAlg
-import gametracker.domain.{Player, Game}
+import gametracker.domain.{Player, PlayerParam, Game}
 
 import cats.data.OptionT
 import cats.effect.IO
@@ -19,7 +19,7 @@ class PlayerRepo(xa: Transactor[IO]) extends PlayerAlg {
 
    override def delete(): IO[Unit] = ???
 
-   override def insert(player: Player): IO[Either[Error, Unit]] = insert_(player).run.void.attemptSql
+   override def insert(player: PlayerParam): IO[Either[Error, Unit]] = insert_(player).run.void.attemptSql
       .map { f =>
          f.leftMap(ex => Error(ex.getMessage()))
       }
@@ -36,7 +36,7 @@ private object PlayerSQL {
 
    def delete_(): Update0 = sql"delete from player where id =${}".update
 
-   def insert_(player: Player): Update0 = sql"insert into player (id, username) values (${player.id}, ${player.username})".update
+   def insert_(player: PlayerParam): Update0 = sql"insert into player (username) values (${player.username})".update
 
    def findGames(id: Long): Query0[Game] = sql"""
       select distinct

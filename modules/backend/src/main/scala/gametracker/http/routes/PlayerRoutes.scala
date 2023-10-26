@@ -1,7 +1,7 @@
 package gametracker.http.routes
 
 import gametracker.algebras.PlayerAlg
-import gametracker.domain.Player
+import gametracker.domain.{Player, PlayerParam}
 import gametracker.http.Codecs.given
 
 import cats.effect.IO
@@ -24,7 +24,7 @@ class PlayerRoutes(player: PlayerAlg) extends Http4sDsl[IO] {
 
       case req @ POST -> Root / "create" =>
          for {
-            ply  <- req.as[Player]
+            ply  <- req.as[PlayerParam]
             res  <- player.insert(ply)
             resp <- res.fold(e => BadRequest(e.getMessage()), v => Ok())
          } yield resp

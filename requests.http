@@ -1,0 +1,29 @@
+### --------------- Player Routes ---------------
+GET http://localhost:8080/player/1 HTTP/1.1
+Content-Type: application/json
+
+### 
+
+POST http://localhost:8080/player/create HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Jimmy"
+}
+
+### --------------- Game Routes ---------------
+GET http://localhost:8080/game/all HTTP/1.1
+Content-Type: application/json
+
+###
+
+POST http://localhost:8080/game/create HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Ping Pong"
+}
+
+### --------------- Match Routes ---------------
+GET http://localhost:8080/match/all HTTP/1.1
+Content-Type: application/json

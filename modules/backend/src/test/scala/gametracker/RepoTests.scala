@@ -1,7 +1,7 @@
 package gametracker
 
-import gametracker.domain.*
-import gametracker.repository.{MatchRepo, MatchSQL}
+import gametracker.backend.repository.{MatchRepo, MatchSQL}
+import gametracker.shared.domain.*
 
 import cats.effect.IO
 import doobie.Transactor

@@ -1,8 +1,8 @@
-package gametracker.http.routes
+package gametracker.backend.http.routes
 
-import gametracker.algebras.PlayerAlg
-import gametracker.domain.{Player, PlayerParam}
-import gametracker.http.Codecs.given
+import gametracker.shared.domain.*
+import gametracker.backend.algebras.PlayerAlg
+import gametracker.backend.http.Codecs.given
 
 import cats.effect.IO
 import org.http4s.HttpRoutes

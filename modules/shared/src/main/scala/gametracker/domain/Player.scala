@@ -1,4 +1,4 @@
-package gametracker.domain
+package gametracker.shared.domain
 
 final case class Player(
     id: Int,

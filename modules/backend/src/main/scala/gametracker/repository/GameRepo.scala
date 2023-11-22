@@ -1,7 +1,7 @@
-package gametracker.repository
+package gametracker.backend.repository
 
-import gametracker.algebras.GameAlg
-import gametracker.domain.{Game, GameParam}
+import gametracker.shared.domain.*
+import gametracker.backend.algebras.GameAlg
 
 import cats.*
 import cats.data.*

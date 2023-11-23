@@ -24,3 +24,10 @@ hs_err_pid*
 project/.bloop/*
 project/project/*
 .metals/*
+
+# Mac Stuff
+.DS_Store
+
+# Dependency directories
+node_modules/
+jspm_packages/

@@ -27,3 +27,12 @@ Content-Type: application/json
 ### --------------- Match Routes ---------------
 GET http://localhost:8080/match/all HTTP/1.1
 Content-Type: application/json
+
+###
+
+GET http://localhost:8080/match/1 HTTP/1.1
+
+###
+
+GET http://localhost:8080/match/search?playerId=2 HTTP/1.1
+Content-Type: application/json

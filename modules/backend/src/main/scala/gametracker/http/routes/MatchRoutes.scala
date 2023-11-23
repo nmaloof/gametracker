@@ -1,8 +1,8 @@
 package gametracker.backend.http.routes
 
 import gametracker.backend.algebras.MatchAlg
-import gametracker.shared.domain.*
 import gametracker.backend.http.Codecs.given
+import gametracker.shared.domain.*
 
 import cats.effect.IO
 import org.http4s.HttpRoutes
@@ -18,17 +18,17 @@ class MatchRoutes(mtch: MatchAlg) extends Http4sDsl[IO] {
    object PlayerParam extends OptionalQueryParamDecoderMatcher[Long]("playerId")
 
    private val httpRoutes = HttpRoutes.of[IO] {
-      case GET -> Root / "all" => Ok(mtch.findAll())
+      case GET -> Root / "all" => Ok(mtch.findAll().map(MatchView.from(_)))
 
-      case GET -> Root / LongVar(id) => mtch.findById(id).foldF(NotFound())(Ok(_))
+      case GET -> Root / LongVar(id) => mtch.findById(id).map(MatchView.from(_)).foldF(NotFound())(Ok(_))
 
       case GET -> Root / "search" :? GameParam(gameId) +& PlayerParam(playerId) =>
          (gameId, playerId) match {
             case (None, None) => BadRequest("Please specify a search parameter")
-            case _            => mtch.findBy(playerId, gameId).foldF(NotFound())(Ok(_))
+            case _            => mtch.findBy(playerId, gameId).map(MatchView.from(_)).foldF(NotFound())(Ok(_))
          }
 
-      case GET -> Root / "test" => mtch.findBy(Some(1), None).map(MatchView.from(_)).foldF(NotFound())(Ok(_))
+      // case GET -> Root / "test" => mtch.findBy(Some(1), None).map(MatchView.from(_)).foldF(NotFound())(Ok(_))
 
    }
 

@@ -1,7 +1,7 @@
-package gametracker.modules
+package gametracker.backend.modules
 
-import gametracker.http.routes.*
-import gametracker.repository.*
+import gametracker.backend.http.routes.*
+import gametracker.backend.repository.*
 
 import cats.effect.IO
 import cats.syntax.all.*

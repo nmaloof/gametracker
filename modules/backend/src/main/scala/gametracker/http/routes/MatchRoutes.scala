@@ -1,7 +1,8 @@
-package gametracker.http.routes
+package gametracker.backend.http.routes
 
-import gametracker.algebras.MatchAlg
-import gametracker.http.Codecs.given
+import gametracker.backend.algebras.MatchAlg
+import gametracker.shared.domain.*
+import gametracker.backend.http.Codecs.given
 
 import cats.effect.IO
 import org.http4s.HttpRoutes
@@ -26,6 +27,8 @@ class MatchRoutes(mtch: MatchAlg) extends Http4sDsl[IO] {
             case (None, None) => BadRequest("Please specify a search parameter")
             case _            => mtch.findBy(playerId, gameId).foldF(NotFound())(Ok(_))
          }
+
+      case GET -> Root / "test" => mtch.findBy(Some(1), None).map(MatchView.from(_)).foldF(NotFound())(Ok(_))
 
    }
 

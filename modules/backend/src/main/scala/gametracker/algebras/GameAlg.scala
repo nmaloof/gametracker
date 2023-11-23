@@ -1,6 +1,6 @@
-package gametracker.algebras
+package gametracker.backend.algebras
 
-import gametracker.domain.{Game, GameParam}
+import gametracker.shared.domain.*
 
 import cats.data.OptionT
 import cats.effect.IO

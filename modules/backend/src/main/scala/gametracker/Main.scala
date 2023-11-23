@@ -1,6 +1,6 @@
-package gametracker
+package gametracker.backend
 
-import gametracker.modules.HttpApi
+import gametracker.backend.modules.HttpApi
 
 import cats.effect.{ExitCode, IO, IOApp}
 import com.comcast.ip4s.{ipv4, port}
@@ -16,9 +16,10 @@ object Main extends IOApp {
 
    given LoggerFactory[IO] = slf4j.Slf4jFactory.create[IO]
 
+   val dbUrl = "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db" // "jdbc:sqlite:/workspaces/gametracker/testing.db"
    val xa = Transactor.fromDriverManager[IO](
      driver = "org.sqlite.JDBC",
-     url = "jdbc:sqlite:/workspaces/gametracker/testing.db",
+     url = dbUrl,
      logHandler = Some(
        new LogHandler[IO] {
           def run(logEvent: LogEvent): IO[Unit] = IO { println(logEvent.sql) }
@@ -46,7 +47,7 @@ object Main extends IOApp {
    // } yield s
 
    val fly4sRes = Fly4s.make[IO](
-     url = "jdbc:sqlite:/workspaces/gametracker/testing.db",
+     url = dbUrl,
      user = None,
      password = None,
      config = Fly4sConfig(

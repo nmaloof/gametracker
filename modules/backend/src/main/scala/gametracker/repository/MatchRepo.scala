@@ -1,7 +1,7 @@
-package gametracker.repository
+package gametracker.backend.repository
 
-import gametracker.algebras.MatchAlg
-import gametracker.domain.Match
+import gametracker.backend.algebras.MatchAlg
+import gametracker.shared.domain.Match
 
 import cats.data.OptionT
 import cats.effect.IO

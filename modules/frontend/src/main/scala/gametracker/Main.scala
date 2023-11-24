@@ -1,9 +1,11 @@
-package gametracker
+package gametracker.frontend
+
+import gametracker.shared.domain.*
+import gametracker.frontend.components.MatchViewComponent
 
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import io.laminext.fetch.{Fetch, FetchResponse}
-import gametracker.SearchBox.Game
 import scala.util.Success
 
 object Main {
@@ -13,15 +15,15 @@ object Main {
          lazy val appContainer = dom.document.querySelector("#appContainer")
          val appElement        = div(h1("Hello world, my friend!"))
 
-         val formSubmitted = Var[Boolean](false)
-         val searchResults = Var[List[Game]](List.empty)
-         val (responsesStream, responseReceived) = EventStream.withCallback[FetchResponse[List[Game]]]
-         
-         val something = responsesStream.recoverToTry.collect{ case Success(response) => response.data }
-         
+         val formSubmitted                       = Var[Boolean](false)
+         val searchResults                       = Var[List[MatchView]](List.empty)
+         val (responsesStream, responseReceived) = EventStream.withCallback[FetchResponse[List[MatchView]]]
+
+         val something = responsesStream.recoverToTry.collect { case Success(response) => response.data }
+
          val root = div(
            SearchBox.render(formSubmitted.writer, responseReceived),
-           child <-- formSubmitted.signal.map(a => if (!a) emptyNode else GameComponent.render(something.toSignal(List.empty)))
+           child <-- formSubmitted.signal.map(a => if !a then emptyNode else MatchViewComponent.render(something.toSignal(List.empty)))
          )
 
          render(appContainer, root)

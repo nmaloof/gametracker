@@ -32,7 +32,7 @@ class PlayerRepo(xa: Transactor[IO]) extends PlayerAlg {
 private object PlayerSQL {
    def select(id: Long): Query0[Player] = sql"select id, username from player where id = $id".query
 
-   def select(name: String): Query0[Player] = sql"select id, username from player where name = $name".query
+   def select(name: String): Query0[Player] = sql"select id, username from player where username = $name".query
 
    def delete_(): Update0 = sql"delete from player where id =${}".update
 

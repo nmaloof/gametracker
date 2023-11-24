@@ -1,4 +1,4 @@
-.container {
+/* .container {
     display: flex;
     justify-content: center;
 }
@@ -6,4 +6,36 @@ li {
     display: block;
     margin-left: auto;
     margin-right: auto;
+} */
+
+.match {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: thick solid;
+    gap: 10px;
+    margin: 5px;
+    padding: 5px;
+    align-items: center;
+}
+
+.match > .team {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: thin solid;
+    margin: 1px;
+    padding: 1px;
+    text-align: center;
+    align-items: center;
+}
+
+.team > .score {
+    font-weight: bold;
+}
+
+.winner {
+    color: darkblue;
+}
+
+.loser {
+    color: red;
 }

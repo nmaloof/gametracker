@@ -16,7 +16,8 @@ object Main extends IOApp {
 
    given LoggerFactory[IO] = slf4j.Slf4jFactory.create[IO]
 
-   val dbUrl = "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db" // "jdbc:sqlite:/workspaces/gametracker/testing.db"
+   // val dbUrl = "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db"  // Mac
+   val dbUrl = "jdbc:sqlite:/workspaces/gametracker/testing.db" // Windows
    val xa = Transactor.fromDriverManager[IO](
      driver = "org.sqlite.JDBC",
      url = dbUrl,

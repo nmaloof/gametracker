@@ -11,7 +11,7 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 
 class PlayerRoutes(player: PlayerAlg) extends Http4sDsl[IO] {
-   private val prefixPath = "/player"
+   private val prefixPath = "/players"
 
    private val httpRoutes = HttpRoutes.of[IO] {
       case GET -> Root => Ok("player route")

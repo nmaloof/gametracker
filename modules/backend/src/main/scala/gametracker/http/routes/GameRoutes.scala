@@ -12,7 +12,7 @@ import org.http4s.server.Router
 
 class GameRoutes(game: GameAlg) extends Http4sDsl[IO] {
 
-   private val prefixPath = "/game"
+   private val prefixPath = "/games"
 
    private val httpRoutes = HttpRoutes.of[IO] {
       case GET -> Root / "all" => Ok(game.findAll())

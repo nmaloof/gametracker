@@ -39,6 +39,7 @@ lazy val backend = project
        "io.circe"           %% "circe-generic"       % "0.14.6",
        "com.github.jwt-scala" %% "jwt-circe"          % "9.4.5",
        "org.typelevel"      %% "log4cats-slf4j"      % "2.6.0",
+       "ch.qos.logback" % "logback-classic" % "1.4.14",
        "org.tpolecat"       %% "doobie-core"         % "1.0.0-RC4",
        "com.github.geirolz" %% "fly4s-core"          % "0.0.19",
        "org.xerial"          % "sqlite-jdbc"         % "3.43.0.0",

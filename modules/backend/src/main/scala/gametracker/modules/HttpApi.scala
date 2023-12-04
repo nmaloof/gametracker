@@ -53,7 +53,7 @@ final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
         logHeaders = true,
         logBody = true,
         redactHeadersWhen = _ => false,
-        logAction = Some((msg: String) => IO.println("msg"))
+        logAction = Some((msg: String) => logger.debug(msg))
       )(http)
    } andThen { (http: HttpRoutes[IO]) =>
       CORS.policy.withAllowOriginAll.withAllowMethodsAll.withAllowHeadersAll
@@ -62,7 +62,7 @@ final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
    } andThen { (http: HttpRoutes[IO]) =>
       ErrorAction.httpRoutes[IO](
         http,
-        (req, thr) => IO.println("thr.getMessage()")
+        (req, thr) => logger.error(thr.getMessage())
       )
    }
 

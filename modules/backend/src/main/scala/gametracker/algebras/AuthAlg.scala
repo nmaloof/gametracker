@@ -26,7 +26,7 @@ class Auth(token: TokenAlg, account: AccountAlg, redis: scala.collection.mutable
             redis.get(act.username) match {
                case None =>
                   token.create.flatTap { t =>
-                     IO.println(redis) >> IO.apply {
+                     IO.apply {
                         redis.addOne((act.toString(), t.value))
                         redis.addOne((t.value, act.toString()))
                      }

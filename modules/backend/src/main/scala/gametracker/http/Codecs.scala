@@ -1,11 +1,17 @@
 package gametracker.backend.http
 
+import gametracker.backend.domain.*
 import gametracker.shared.domain.*
 
 import io.circe.generic.semiauto.*
 import io.circe.{Decoder, Encoder}
 
 private object Codecs {
+
+   // Account Codecs
+   given AccountDecoder: Decoder[Account] = deriveDecoder[Account]
+   given AccountEncoder: Encoder[Account] = deriveEncoder[Account]
+
    // Player Codecs
    given playerDecoder: Decoder[Player]           = deriveDecoder[Player]
    given playerEncoder: Encoder[Player]           = deriveEncoder[Player]

@@ -15,14 +15,16 @@ import org.typelevel.log4cats.{LoggerFactory, slf4j}
 object Main extends IOApp {
 
    given LoggerFactory[IO] = slf4j.Slf4jFactory.create[IO]
+   val logger = LoggerFactory[IO].getLogger
 
-   val dbUrl = "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db" // "jdbc:sqlite:/workspaces/gametracker/testing.db"
+   // val dbUrl = "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db"  // Mac
+   val dbUrl = "jdbc:sqlite:/workspaces/gametracker/testing.db" // Windows
    val xa = Transactor.fromDriverManager[IO](
      driver = "org.sqlite.JDBC",
      url = dbUrl,
      logHandler = Some(
        new LogHandler[IO] {
-          def run(logEvent: LogEvent): IO[Unit] = IO { println(logEvent.sql) }
+          def run(logEvent: LogEvent): IO[Unit] = logger.debug(logEvent.sql) // IO { println(logEvent.sql) }
        }
      )
    )
@@ -59,10 +61,10 @@ object Main extends IOApp {
 
    override def run(args: List[String]): IO[ExitCode] = {
       for {
-         _      <- IO.println("----- Starting -----")
+         _      <- logger.info("----- Starting -----") 
          result <- fly4sRes.evalMap(_.validateAndMigrate.result).use(IO(_))
          _      <- server.use(_ => IO.never)
-         _      <- IO.println("----- Complete -----")
+         _      <- logger.info("----- Complete -----")
       } yield ExitCode.Success
    }
 }

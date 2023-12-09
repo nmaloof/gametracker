@@ -12,7 +12,7 @@ import org.http4s.dsl.impl.QueryParamDecoderMatcher
 import org.http4s.server.Router
 
 class MatchRoutes(mtch: MatchAlg) extends Http4sDsl[IO] {
-   private val prefixPath = "/match"
+   private val prefixPath = "/matches"
 
    object GameParam   extends OptionalQueryParamDecoderMatcher[Long]("gameId")
    object PlayerParam extends OptionalQueryParamDecoderMatcher[Long]("playerId")

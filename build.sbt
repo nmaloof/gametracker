@@ -1,7 +1,7 @@
 import org.scalajs.linker.interface.OutputPatterns
 import org.scalajs.linker.interface.ModuleSplitStyle
 
-ThisBuild / scalaVersion := "3.3.0"
+ThisBuild / scalaVersion := "3.3.1"
 ThisBuild / version      := "0.1.0-SNAPSHOT"
 
 ThisBuild / semanticdbEnabled := true

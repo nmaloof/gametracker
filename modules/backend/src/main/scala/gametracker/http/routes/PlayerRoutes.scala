@@ -1,34 +1,37 @@
 package gametracker.backend.http.routes
 
 import gametracker.backend.algebras.PlayerAlg
+import gametracker.backend.domain.Account
 import gametracker.backend.http.Codecs.given
 import gametracker.shared.domain.*
 
 import cats.effect.IO
-import org.http4s.HttpRoutes
+import cats.implicits.*
+import org.http4s.*
 import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.dsl.Http4sDsl
-import org.http4s.server.Router
+import org.http4s.server.{AuthMiddleware, Router}
 
-class PlayerRoutes(player: PlayerAlg) extends Http4sDsl[IO] {
+class PlayerRoutes(player: PlayerAlg, middleware: AuthMiddleware[IO, Account]) extends Http4sDsl[IO] {
    private val prefixPath = "/players"
 
+   private val authRoutes = AuthedRoutes.of[Account, IO] { case req @ POST -> Root / "create" as account =>
+      for {
+         ply  <- req.req.as[PlayerParam]
+         res  <- player.insert(ply)
+         resp <- res.fold(e => BadRequest(e.getMessage()), v => Ok())
+      } yield resp
+   }
+
    private val httpRoutes = HttpRoutes.of[IO] {
-      case GET -> Root => Ok("player route")
+      case GET -> Root / "all" => Ok(player.findAll())
 
       case GET -> Root / LongVar(id) => player.findById(id).foldF(NotFound())(Ok(_))
 
       case GET -> Root / LongVar(id) / "games" => Ok(player.findGamesPlayed(id))
 
       case GET -> Root / "name" / name => player.findByName(name).foldF(NotFound())(Ok(_))
-
-      case req @ POST -> Root / "create" =>
-         for {
-            ply  <- req.as[PlayerParam]
-            res  <- player.insert(ply)
-            resp <- res.fold(e => BadRequest(e.getMessage()), v => Ok())
-         } yield resp
    }
 
-   val routes = Router(prefixPath -> httpRoutes)
+   val routes = Router(prefixPath -> (httpRoutes <+> middleware(authRoutes)))
 }

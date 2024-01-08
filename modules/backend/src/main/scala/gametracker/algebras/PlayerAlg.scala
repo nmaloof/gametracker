@@ -6,6 +6,9 @@ import cats.data.OptionT
 import cats.effect.IO
 
 trait PlayerAlg {
+
+   def findAll(): IO[List[Player]]
+
    def findById(id: Long): OptionT[IO, Player]
 
    def findByName(name: String): OptionT[IO, Player]

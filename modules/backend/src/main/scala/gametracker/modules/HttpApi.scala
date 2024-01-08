@@ -1,7 +1,7 @@
 package gametracker.backend.modules
 
 import gametracker.backend.algebras.*
-import gametracker.backend.domain.Account
+import gametracker.backend.config.AppConfig
 import gametracker.backend.http.routes.*
 import gametracker.backend.repository.*
 
@@ -18,33 +18,22 @@ import org.http4s.server.middleware.{CORS, ErrorAction, RequestLogger}
 import org.typelevel.log4cats.LoggerFactory
 import pdi.jwt.{JwtAlgorithm, JwtClaim}
 
-final class HttpApi(xa: Transactor[IO])(using lf: LoggerFactory[IO]) {
+final class HttpApi(xa: Transactor[IO], config: AppConfig)(using lf: LoggerFactory[IO]) {
 
    val logger = LoggerFactory[IO].getLogger
 
-   private val gameRep   = new GameRepo(xa)
-   private val playerRep = new PlayerRepo(xa)
-   private val matchRep  = new MatchRepo(xa)
-
-   private val gameRoutes   = new GameRoutes(gameRep)
-   private val playerRoutes = new PlayerRoutes(playerRep)
-   private val matchRoutes  = new MatchRoutes(matchRep)
+   private val algebras = Algebras(xa)
 
    // --- Auth Stuff
-   val inMemDb             = scala.collection.mutable.Map[String, String]()
-   private val accountRepo = new AccountRepo(xa)
-
-   def authenticate(token: JwtToken)(claim: JwtClaim): IO[Option[Account]] = IO {
-      println(s"Token: $token")
-      println(s"Claim: $claim")
-      inMemDb.get(token.value).map(_ => Account("", ""))
-   }
-
-   private val jwtMiddleware = JwtAuthMiddleware[IO, Account](JwtAuth.hmac("secret-key", JwtAlgorithm.HS256), authenticate)
-   private val token         = new Token("secret-key")
-   private val auth          = new Auth(token, accountRepo, inMemDb)
-   private val authRoutes    = new AuthRoutes(auth, jwtMiddleware)
+   val inMemDb            = scala.collection.mutable.Map[String, String]()
+   val security           = Security(config, inMemDb)
+   private val auth       = new Auth(security.token, algebras.accounts, inMemDb)
+   private val authRoutes = new AuthRoutes(auth, security.jwtMiddleware)
    // --- End Auth Stuff
+
+   private val gameRoutes   = new GameRoutes(algebras.games, security.jwtMiddleware)
+   private val playerRoutes = new PlayerRoutes(algebras.players, security.jwtMiddleware)
+   private val matchRoutes  = new MatchRoutes(algebras.matches)
 
    private val allRoutes = (gameRoutes.routes <+> playerRoutes.routes <+> matchRoutes.routes <+> authRoutes.routes)
 

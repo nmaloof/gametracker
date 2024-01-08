@@ -7,7 +7,8 @@ import com.comcast.ip4s.*
 
 final case class AppConfig(
     apiConfig: ApiConfig,
-    databaseConfig: DatabaseConfig
+    databaseConfig: DatabaseConfig,
+    securityConfig: SecurityConfig
 )
 
 final case class DatabaseConfig(url: String)
@@ -15,6 +16,10 @@ final case class DatabaseConfig(url: String)
 final case class ApiConfig(
     host: Host,
     port: Port
+)
+
+final case class SecurityConfig(
+    secretKey: String
 )
 
 object AppConfig {
@@ -32,5 +37,9 @@ object AppConfig {
       ).parMapN(ApiConfig.apply)
    }
 
-   def config: ConfigValue[Effect, AppConfig] = (apiConfig, databaseConfig).parMapN(AppConfig.apply)
+   val securityConfig: ConfigValue[Effect, SecurityConfig] = {
+      default("secret-key").map(SecurityConfig.apply)
+   }
+
+   def config: ConfigValue[Effect, AppConfig] = (apiConfig, databaseConfig, securityConfig).parMapN(AppConfig.apply)
 }

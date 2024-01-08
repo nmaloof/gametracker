@@ -13,6 +13,8 @@ class PlayerRepo(xa: Transactor[IO]) extends PlayerAlg {
 
    import PlayerSQL.*
 
+   override def findAll(): IO[List[Player]] = baseSelect.query[Player].to[List].transact(xa)
+
    override def findById(id: Long): OptionT[IO, Player] = OptionT(select(id).option.transact(xa))
 
    override def findByName(name: String): OptionT[IO, Player] = OptionT(select(name).option.transact(xa))
@@ -30,7 +32,10 @@ class PlayerRepo(xa: Transactor[IO]) extends PlayerAlg {
 }
 
 private object PlayerSQL {
-   def select(id: Long): Query0[Player] = sql"select id, username from player where id = $id".query
+
+   val baseSelect = fr"select id, username from player"
+
+   def select(id: Long): Query0[Player] = (baseSelect ++ fr"where id = $id").query
 
    def select(name: String): Query0[Player] = sql"select id, username from player where username = $name".query
 

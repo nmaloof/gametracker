@@ -57,7 +57,7 @@ object Main extends IOApp {
          fly4sRes = makeFlyway(config)
          result <- fly4sRes.evalMap(_.validateAndMigrate.result).use(IO(_))
          xa      = makeTransactor(config)
-         httpApi = HttpApi(xa)
+         httpApi = HttpApi(xa, config)
          server = EmberServerBuilder
             .default[IO]
             .withHost(config.apiConfig.host)

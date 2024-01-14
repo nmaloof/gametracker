@@ -1,12 +1,40 @@
-/* .container {
-    display: flex;
-    justify-content: center;
+body {
+    background-color: #202b38;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-li {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-} */
+
+#pageTitle {
+    text-align: center;
+    color: greenyellow;
+}
+
+.navBar {
+    border-bottom: 1px solid white;
+}
+
+/* Begin -- Authentication Section */
+form > div {
+    width: 50%;
+    margin: 5% auto 15% auto;
+}
+form > div > label {
+    color: greenyellow;
+}
+form > div > label > input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+}
+/* End -- Authentication Section */
+
+.searchBar {
+    text-align: center;
+}
+.searchBar > input {
+    width: 50%;
+}
 
 .match {
     display: grid;
@@ -16,6 +44,7 @@ li {
     margin: 5px;
     padding: 5px;
     align-items: center;
+    color: white;
 }
 
 .match > .team {
@@ -33,9 +62,9 @@ li {
 }
 
 .winner {
-    color: darkblue;
+    color: lightgreen;
 }
 
 .loser {
-    color: red;
+    color: lightcoral;
 }

@@ -25,7 +25,9 @@ class AuthRoutes(auth: AuthAlg, middleware: AuthMiddleware[IO, Account]) extends
    private val authRoutes = AuthedRoutes.of[Account, IO] { // TODO: Change this type later
       case GET -> Root / "testing" as account => Ok(account.toString())
 
-      case POST -> Root / "logout" as user => Ok("Logged Out").map(_.removeCookie("token"))
+      case req @ POST -> Root / "logout" as user => { 
+         auth.logout(req) *> Ok("Logged Out").map(_.removeCookie("token"))
+      }
    }
 
    val routes = Router(prefixPath -> (noAuthRoutes <+> middleware(authRoutes)))

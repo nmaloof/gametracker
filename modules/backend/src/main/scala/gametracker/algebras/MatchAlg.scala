@@ -11,4 +11,5 @@ trait MatchAlg {
    def findAll(): IO[List[Match]]
 
    def findBy(playerId: Option[Long], gameId: Option[Long]): OptionT[IO, List[Match]] // TODO: This list could be empty. Maybe use strings?
+
 }

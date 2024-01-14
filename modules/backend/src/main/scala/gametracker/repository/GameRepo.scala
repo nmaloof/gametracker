@@ -1,6 +1,7 @@
 package gametracker.backend.repository
 
 import gametracker.backend.algebras.GameAlg
+import gametracker.backend.domain.GameAlreadyExists
 import gametracker.shared.domain.*
 
 import cats.*
@@ -17,12 +18,8 @@ class GameRepo(xa: Transactor[IO]) extends GameAlg {
 
    override def findAll(): IO[List[Game]] = baseSelect.query[Game].to[List].transact(xa)
 
-   override def insert(game: GameParam): IO[Either[Error, Unit]] = {
-      insert_(game).run.void.attemptSql
-         .map { f =>
-            f.leftMap(ex => Error(ex.getMessage()))
-         }
-         .transact(xa)
+   override def insert(game: GameParam): IO[Unit] = {
+      insert_(game).run.void.transact(xa).orRaise(GameAlreadyExists(game.name))
    }
 
    override def delete(id: Long): IO[Unit] = delete_(id).run.transact(xa).void
@@ -36,5 +33,5 @@ private object GameSQL {
 
    def delete_(id: Long): Update0 = sql"delete from game where id=$id".update
 
-   def insert_(game: GameParam): Update0 = sql"insert into game (name) values (${game.name})".update
+   def insert_(game: GameParam): Update0 = sql"insert into game (name) values (${game.name.toLowerCase})".update
 }

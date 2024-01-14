@@ -8,10 +8,12 @@ import com.comcast.ip4s.*
 final case class AppConfig(
     apiConfig: ApiConfig,
     databaseConfig: DatabaseConfig,
+    redisConfig: RedisConfig,
     securityConfig: SecurityConfig
 )
 
 final case class DatabaseConfig(url: String)
+final case class RedisConfig(url: String)
 
 final case class ApiConfig(
     host: Host,
@@ -30,6 +32,10 @@ object AppConfig {
          .map(DatabaseConfig.apply) // For Mac: "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db"
    }
 
+   val redisConfig: ConfigValue[Effect, RedisConfig] = {
+      default("redis://localhost:6379").map(RedisConfig.apply)
+   }
+
    val apiConfig: ConfigValue[Effect, ApiConfig] = {
       (
         env("API_HOST").or(prop("http4s.host")).as[Host].default(ipv4"0.0.0.0"),
@@ -41,5 +47,5 @@ object AppConfig {
       default("secret-key").map(SecurityConfig.apply)
    }
 
-   def config: ConfigValue[Effect, AppConfig] = (apiConfig, databaseConfig, securityConfig).parMapN(AppConfig.apply)
+   def config: ConfigValue[Effect, AppConfig] = (apiConfig, databaseConfig, redisConfig, securityConfig).parMapN(AppConfig.apply)
 }

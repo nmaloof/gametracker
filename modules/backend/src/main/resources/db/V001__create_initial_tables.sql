@@ -1,11 +1,17 @@
-create table game (
-    id integer primary key,
-    name text not null unique
+create table account (
+    id text primary key,
+    username text not null unique,
+    password text not null
 ) strict;
 
 create table player (
     id integer primary key,
-    username text not null unique
+    name text not null unique
+) strict;
+
+create table game (
+    id integer primary key,
+    name text not null unique
 ) strict;
 
 create table match (

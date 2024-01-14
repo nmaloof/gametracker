@@ -7,11 +7,11 @@ import gametracker.shared.domain.*
 
 object MatchViewComponent {
 
-  def render(matchViews: Signal[List[MatchView]]): Element = {
-    div(
-      children <-- matchViews.map(mv => mv.map(renderOneMatch))
-    )
-  }
+   def render(matchViews: Signal[List[MatchView]]): Element = {
+      div(
+        children <-- matchViews.map(mv => mv.map(renderOneMatch))
+      )
+   }
 
    def renderOneMatch(matchView: MatchView): Div = {
       div(
@@ -25,10 +25,10 @@ object MatchViewComponent {
    }
 
    def renderTeamDetails(teamDetails: TeamDetails): List[Div] = {
-    val orderedDetails = teamDetails.toList.sortBy(x => x._2._1).reverse
-    val topTeamScore = orderedDetails.head._2._1
-    
-    val elements = for {
+      val orderedDetails = teamDetails.toList.sortBy(x => x._2._1).reverse
+      val topTeamScore   = orderedDetails.head._2._1
+
+      val elements = for {
          td <- teamDetails
       } yield {
          div(
@@ -38,10 +38,10 @@ object MatchViewComponent {
              td._2._2.map(x => p(x.username))
            ),
            div(
-             if (td._2._1 == topTeamScore){ 
-              cls := "score winner"
-             } else  {
-              cls :=  "score loser"
+             if td._2._1 == topTeamScore then {
+                cls := "score winner"
+             } else {
+                cls := "score loser"
              },
              td._2._1
            )

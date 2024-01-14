@@ -9,6 +9,7 @@ import cats.effect.IO
 import cats.syntax.all.*
 import dev.profunktor.auth.JwtAuthMiddleware
 import dev.profunktor.auth.jwt.{JwtAuth, JwtToken}
+import dev.profunktor.redis4cats.RedisCommands
 import doobie.Transactor
 import io.circe.parser.decode
 import org.http4s.*
@@ -18,16 +19,15 @@ import org.http4s.server.middleware.{CORS, ErrorAction, RequestLogger}
 import org.typelevel.log4cats.LoggerFactory
 import pdi.jwt.{JwtAlgorithm, JwtClaim}
 
-final class HttpApi(xa: Transactor[IO], config: AppConfig)(using lf: LoggerFactory[IO]) {
+final class HttpApi(xa: Transactor[IO], config: AppConfig, redis: RedisCommands[IO, String, String])(using lf: LoggerFactory[IO]) {
 
    val logger = LoggerFactory[IO].getLogger
 
    private val algebras = Algebras(xa)
 
    // --- Auth Stuff
-   val inMemDb            = scala.collection.mutable.Map[String, String]()
-   val security           = Security(config, inMemDb)
-   private val auth       = new Auth(security.token, algebras.accounts, inMemDb)
+   val security           = Security(config, redis)
+   private val auth       = new AuthRepo(security.token, algebras.accounts, redis)
    private val authRoutes = new AuthRoutes(auth, security.jwtMiddleware)
    // --- End Auth Stuff
 

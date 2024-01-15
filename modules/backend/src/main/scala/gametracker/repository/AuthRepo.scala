@@ -2,16 +2,16 @@ package gametracker.backend.repository
 
 import gametracker.backend.algebras.*
 
-import concurrent.duration.DurationInt
-
 import cats.effect.IO
 import cats.implicits.*
 import dev.profunktor.auth.jwt.JwtToken
 import dev.profunktor.redis4cats.RedisCommands
 import org.typelevel.log4cats.LoggerFactory
 
+import concurrent.duration.DurationInt
 
-class AuthRepo(token: TokenAlg, account: AccountAlg, redis: RedisCommands[IO, String, String])(using lf: LoggerFactory[IO]) extends AuthAlg {
+class AuthRepo(token: TokenAlg, account: AccountAlg, redis: RedisCommands[IO, String, String])(using lf: LoggerFactory[IO])
+    extends AuthAlg {
 
    case class InvalidUsernameOrPassword(username: String) extends scala.util.control.NoStackTrace
 
@@ -35,7 +35,7 @@ class AuthRepo(token: TokenAlg, account: AccountAlg, redis: RedisCommands[IO, St
    override def logout(token: JwtToken): IO[Unit] = {
       // redis.del(token.value).void
       for {
-         _ <- logger.info("here I am")
+         _       <- logger.info("here I am")
          keysVal <- redis.get(token.value)
       } yield ()
    }

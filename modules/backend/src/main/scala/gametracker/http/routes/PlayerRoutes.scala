@@ -15,16 +15,16 @@ import org.http4s.server.{AuthMiddleware, Router}
 class PlayerRoutes(player: PlayerAlg, middleware: AuthMiddleware[IO, Account]) extends Http4sDsl[IO] {
    private val prefixPath = "/players"
 
-   private val authRoutes = AuthedRoutes.of[Account, IO] { 
+   private val authRoutes = AuthedRoutes.of[Account, IO] {
       case req @ POST -> Root / "create" as account => {
          val reply = for {
-            ply <- req.req.as[PlayerParam]
-            res <- player.insert(ply)
+            ply  <- req.req.as[PlayerParam]
+            res  <- player.insert(ply)
             resp <- Ok()
          } yield resp
 
-         reply.handleErrorWith {
-            case PlayerAlreadyExists(name) => Conflict("Player name already exists")
+         reply.handleErrorWith { case PlayerAlreadyExists(name) =>
+            Conflict("Player name already exists")
          }
       }
 

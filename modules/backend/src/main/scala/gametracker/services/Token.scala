@@ -3,9 +3,9 @@ package gametracker.backend.services
 import gametracker.backend.algebras.TokenAlg
 
 import cats.effect.IO
-import io.circe.syntax.*
 import dev.profunktor.auth.jwt.{JwtSecretKey, JwtToken, jwtEncode}
-import pdi.jwt.{JwtClaim, JwtAlgorithm}
+import io.circe.syntax.*
+import pdi.jwt.{JwtAlgorithm, JwtClaim}
 
 class Token(secretKey: String) extends TokenAlg {
 

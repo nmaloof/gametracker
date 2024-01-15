@@ -16,7 +16,7 @@ class GameRoutes(game: GameAlg, middleware: AuthMiddleware[IO, Account]) extends
 
    private val prefixPath = "/games"
 
-   private val authRoutes = AuthedRoutes.of[Account, IO] { 
+   private val authRoutes = AuthedRoutes.of[Account, IO] {
       case req @ POST -> Root / "create" as account => {
          val reply = for {
             gme  <- req.req.as[GameParam]
@@ -24,8 +24,8 @@ class GameRoutes(game: GameAlg, middleware: AuthMiddleware[IO, Account]) extends
             resp <- Ok()
          } yield resp
 
-         reply.handleErrorWith {
-            case GameAlreadyExists(game) => Conflict("Game name already exists")
+         reply.handleErrorWith { case GameAlreadyExists(game) =>
+            Conflict("Game name already exists")
          }
       }
 

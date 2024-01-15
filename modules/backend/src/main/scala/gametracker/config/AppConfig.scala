@@ -28,9 +28,9 @@ object AppConfig {
 
    val databaseConfig: ConfigValue[Effect, DatabaseConfig] = {
       (
-         env("DB_URL").default("jdbc:postgresql://localhost:5432/gametracker"),
-         env("DB_USERNAME").default("postgres"),
-         env("DB_PASSWORD").default("secretpassword")
+        env("DB_URL").default("jdbc:postgresql://localhost:5432/gametracker"),
+        env("DB_USERNAME").default("postgres"),
+        env("DB_PASSWORD").default("secretpassword")
       ).parMapN(DatabaseConfig.apply)
    }
 

@@ -21,8 +21,10 @@ object Main extends IOApp {
 
    def makeTransactor(config: AppConfig): Transactor[IO] = {
       Transactor.fromDriverManager[IO](
-        driver = "org.sqlite.JDBC",
+        driver = "org.postgresql.Driver",
         url = config.databaseConfig.url,
+        user = config.databaseConfig.username,
+        password = config.databaseConfig.password,
         logHandler = Some(
           new LogHandler[IO] {
              def run(logEvent: LogEvent): IO[Unit] = logger.debug(logEvent.sql) // IO { println(logEvent.sql) }
@@ -33,8 +35,8 @@ object Main extends IOApp {
 
    def makeFlyway(config: AppConfig) = Fly4s.make[IO](
      url = config.databaseConfig.url,
-     user = None,
-     password = None,
+     user = Some(config.databaseConfig.username),
+     password = Some(config.databaseConfig.password.toCharArray()),
      config = Fly4sConfig(
        table = "flyway",
        locations = Locations(List("db")),

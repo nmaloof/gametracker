@@ -43,6 +43,7 @@ lazy val backend = project
        "is.cir"                      %% "ciris"                  % "3.5.0",
        "is.cir"                      %% "ciris-http4s"           % "3.5.0",
        "org.tpolecat"                %% "doobie-core"            % "1.0.0-RC4",
+       "org.tpolecat"                %% "doobie-postgres"        % "1.0.0-RC4",
        "com.github.geirolz"          %% "fly4s-core"             % "0.0.19",
        "org.xerial"                   % "sqlite-jdbc"            % "3.43.0.0",
        "org.springframework.security" % "spring-security-crypto" % "6.2.1",

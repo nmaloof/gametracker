@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gametracker-services
+spec:
+  containers:
+    - name: postgres
+      image: docker.io/postgres:16
+      env:
+        - name: POSTGRES_PASSWORD
+          value: secretpassword
+        - name: POSTGRES_DB
+          value: gametracker
+      ports:
+        - containerPort: 5432
+          hostPort: 5432
+    
+    - name: redis
+      image: docker.io/redis:7
+      ports:
+        - containerPort: 6379
+          hostPort: 6379

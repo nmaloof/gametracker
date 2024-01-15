@@ -2,23 +2,23 @@ create table account (
     id text primary key,
     username text not null unique,
     password text not null
-) strict;
+);
 
 create table player (
-    id integer primary key,
+    id serial primary key,
     name text not null unique
-) strict;
+);
 
 create table game (
-    id integer primary key,
+    id serial primary key,
     name text not null unique
-) strict;
+);
 
 create table match (
-    id integer primary key,
+    id serial primary key,
     game_id integer,
     foreign key (game_id) references game(id)
-) strict;
+);
 
 create table match_detail (
     match_id integer,
@@ -27,4 +27,4 @@ create table match_detail (
     score integer,
     foreign key (match_id) references match(id),
     foreign key (player_id) references player(id)
-) strict;
+);

@@ -26,7 +26,8 @@ class AuthRoutes(auth: AuthAlg, middleware: AuthMiddleware[IO, Account]) extends
       case GET -> Root / "testing" as account => Ok(account.toString())
 
       case req @ POST -> Root / "logout" as user => { 
-         auth.logout(req) *> Ok("Logged Out").map(_.removeCookie("token"))
+         // auth.logout(req) *> 
+         Ok("Logged Out").map(_.removeCookie("token"))
       }
    }
 

@@ -10,7 +10,7 @@ trait GameAlg {
 
    def findAll(): IO[List[Game]]
 
-   def insert(game: GameParam): IO[Either[Error, Unit]]
+   def insert(game: GameParam): IO[Unit]
 
    def delete(id: Long): IO[Unit]
 }

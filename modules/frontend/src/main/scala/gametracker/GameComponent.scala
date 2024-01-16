@@ -2,24 +2,23 @@ package gametracker
 
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
-import gametracker.SearchBox.Game
+import gametracker.shared.domain.Game
 
 object GameComponent {
-  def render(searchResults: Signal[List[Game]]): Element = {
-    def gameRender(game: Game): Element = li(
+   def render(searchResults: Signal[List[Game]]): Element = {
+      def gameRender(game: Game): Element = li(
         div(
-            p(s"ID: ${game.id}"),
-            p(s"Name: ${game.name}")
+          p(s"ID: ${game.id}"),
+          p(s"Name: ${game.name}")
         )
-    )
+      )
 
-
-    div(
+      div(
         cls := "container",
         ul(
-            children <-- searchResults.map(lg => lg.map(gameRender))
+          children <-- searchResults.map(lg => lg.map(gameRender))
         )
-    )
-  }
+      )
+   }
 
 }

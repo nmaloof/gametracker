@@ -1,4 +1,4 @@
-### --------------- Auth Routes ---------------
+### ------------------------------------------------------------ Auth Routes ------------------------------------------------------------
 # @name login
 POST http://localhost:8080/auth/login HTTP/1.1
 Content-Type: application/json
@@ -19,7 +19,7 @@ GET http://localhost:8080/auth/testing HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{jwtAuthToken}}
 
-### --------------- Player Routes ---------------
+### ------------------------------------------------------------ Player Routes ------------------------------------------------------------
 GET http://localhost:8080/players/all HTTP/1.1
 Content-Type: application/json
 
@@ -35,23 +35,29 @@ Content-Type: application/json
 Authorization: Bearer {{jwtAuthToken}}
 
 {
-    "username": "Jimmy2"
+    "name": "Jimmy"
 }
 
-### --------------- Game Routes ---------------
+### ------------------------------------------------------------ Game Routes ------------------------------------------------------------
 GET http://localhost:8080/games/all HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/games/1 HTTP/1.1
 Content-Type: application/json
 
 ###
 
 POST http://localhost:8080/games/create HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{jwtAuthToken}}
 
 {
-    "name": "Ping Pong"
+    "name": "Tennis"
 }
 
-### --------------- Match Routes ---------------
+### ------------------------------------------------------------ Match Routes ------------------------------------------------------------
 GET http://localhost:8080/matches/all HTTP/1.1
 Content-Type: application/json
 

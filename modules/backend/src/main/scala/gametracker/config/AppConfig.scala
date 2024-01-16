@@ -8,10 +8,12 @@ import com.comcast.ip4s.*
 final case class AppConfig(
     apiConfig: ApiConfig,
     databaseConfig: DatabaseConfig,
+    redisConfig: RedisConfig,
     securityConfig: SecurityConfig
 )
 
-final case class DatabaseConfig(url: String)
+final case class DatabaseConfig(url: String, username: String, password: String)
+final case class RedisConfig(url: String)
 
 final case class ApiConfig(
     host: Host,
@@ -25,9 +27,15 @@ final case class SecurityConfig(
 object AppConfig {
 
    val databaseConfig: ConfigValue[Effect, DatabaseConfig] = {
-      env("DB_URL")
-         .default("jdbc:sqlite:/workspaces/gametracker/testing.db")
-         .map(DatabaseConfig.apply) // For Mac: "jdbc:sqlite:/Users/nmaloof/Documents/Software/gametracker/testing.db"
+      (
+        env("DB_URL").default("jdbc:postgresql://localhost:5432/gametracker"),
+        env("DB_USERNAME").default("postgres"),
+        env("DB_PASSWORD").default("secretpassword")
+      ).parMapN(DatabaseConfig.apply)
+   }
+
+   val redisConfig: ConfigValue[Effect, RedisConfig] = {
+      default("redis://localhost:6379").map(RedisConfig.apply)
    }
 
    val apiConfig: ConfigValue[Effect, ApiConfig] = {
@@ -41,5 +49,5 @@ object AppConfig {
       default("secret-key").map(SecurityConfig.apply)
    }
 
-   def config: ConfigValue[Effect, AppConfig] = (apiConfig, databaseConfig, securityConfig).parMapN(AppConfig.apply)
+   def config: ConfigValue[Effect, AppConfig] = (apiConfig, databaseConfig, redisConfig, securityConfig).parMapN(AppConfig.apply)
 }

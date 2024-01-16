@@ -13,15 +13,15 @@ import gametracker.shared.domain.*
 
 object SearchBox {
 
-  given playerDecoder: Decoder[Player]           = deriveDecoder[Player]
-  given gameDecoder: Decoder[Game]           = deriveDecoder[Game]
-  given matchViewDecoder: Decoder[MatchView] = deriveDecoder[MatchView]
-  
-  val searchStringVar = Var("")
+   given playerDecoder: Decoder[Player]       = deriveDecoder[Player]
+   given gameDecoder: Decoder[Game]           = deriveDecoder[Game]
+   given matchViewDecoder: Decoder[MatchView] = deriveDecoder[MatchView]
+
+   val searchStringVar = Var("")
 
    def render(formSubmitted: Observer[Boolean], responseReceived: FetchResponse[List[MatchView]] => Unit): Element = {
       div(
-        cls := "flex justify-center",
+        cls := "searchBar",
         input(
           placeholder := "Player Name",
           controlled(
@@ -32,12 +32,16 @@ object SearchBox {
         button(
           "Search",
           onClick.mapTo(searchStringVar.now()).flatMap { case (searchString) =>
-            Fetch.get(s"http://localhost:8080/player/name/$searchString").decode[Player].flatMap { player => 
-              formSubmitted.onNext(true)
-              Fetch.get(s"http://localhost:8080/match/search?playerId=${player.data.id}").decode[List[MatchView]].map { mv =>
-                mv
-              }
-            }
+             Fetch.get(s"http://localhost:8080/players/name/$searchString").decode[Player].flatMap { player =>
+                formSubmitted.onNext(true)
+                Fetch
+                   .get(s"http://localhost:8080/matches/search?playerId=${player.data.id}")
+                   .decode[List[MatchView]]
+                   .map { mv =>
+                      mv
+                   }
+                   .recover(x => None)
+             }
           } --> responseReceived
         )
       )

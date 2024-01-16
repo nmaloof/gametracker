@@ -1,4 +1,4 @@
-package gametracker.components
+package gametracker.frontend.components
 
 // import gametracker.components.*
 

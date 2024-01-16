@@ -1,7 +1,7 @@
 package gametracker.backend.http.routes
 
 import gametracker.backend.algebras.PlayerAlg
-import gametracker.backend.domain.Account
+import gametracker.backend.domain.{Account, PlayerAlreadyExists}
 import gametracker.backend.http.Codecs.given
 import gametracker.shared.domain.*
 
@@ -15,12 +15,19 @@ import org.http4s.server.{AuthMiddleware, Router}
 class PlayerRoutes(player: PlayerAlg, middleware: AuthMiddleware[IO, Account]) extends Http4sDsl[IO] {
    private val prefixPath = "/players"
 
-   private val authRoutes = AuthedRoutes.of[Account, IO] { case req @ POST -> Root / "create" as account =>
-      for {
-         ply  <- req.req.as[PlayerParam]
-         res  <- player.insert(ply)
-         resp <- res.fold(e => BadRequest(e.getMessage()), v => Ok())
-      } yield resp
+   private val authRoutes = AuthedRoutes.of[Account, IO] {
+      case req @ POST -> Root / "create" as account => {
+         val reply = for {
+            ply  <- req.req.as[PlayerParam]
+            res  <- player.insert(ply)
+            resp <- Ok()
+         } yield resp
+
+         reply.handleErrorWith { case PlayerAlreadyExists(name) =>
+            Conflict("Player name already exists")
+         }
+      }
+
    }
 
    private val httpRoutes = HttpRoutes.of[IO] {

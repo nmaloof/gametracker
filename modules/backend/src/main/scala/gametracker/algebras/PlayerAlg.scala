@@ -17,6 +17,6 @@ trait PlayerAlg {
 
    def delete(): IO[Unit]
 
-   def insert(player: PlayerParam): IO[Either[Error, Unit]]
+   def insert(player: PlayerParam): IO[Unit]
 
 }

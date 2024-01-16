@@ -1,6 +1,7 @@
 package gametracker.backend.repository
 
 import gametracker.backend.algebras.PlayerAlg
+import gametracker.backend.domain.PlayerAlreadyExists
 import gametracker.shared.domain.*
 
 import cats.data.OptionT
@@ -17,15 +18,11 @@ class PlayerRepo(xa: Transactor[IO]) extends PlayerAlg {
 
    override def findById(id: Long): OptionT[IO, Player] = OptionT(select(id).option.transact(xa))
 
-   override def findByName(name: String): OptionT[IO, Player] = OptionT(select(name).option.transact(xa))
+   override def findByName(name: String): OptionT[IO, Player] = OptionT(select(name.toLowerCase).option.transact(xa))
 
    override def delete(): IO[Unit] = ???
 
-   override def insert(player: PlayerParam): IO[Either[Error, Unit]] = insert_(player).run.void.attemptSql
-      .map { f =>
-         f.leftMap(ex => Error(ex.getMessage()))
-      }
-      .transact(xa)
+   override def insert(player: PlayerParam): IO[Unit] = insert_(player).run.void.transact(xa).orRaise(PlayerAlreadyExists(player.name))
 
    override def findGamesPlayed(id: Long): IO[List[Game]] = findGames(id).to[List].transact(xa)
 
@@ -33,15 +30,15 @@ class PlayerRepo(xa: Transactor[IO]) extends PlayerAlg {
 
 private object PlayerSQL {
 
-   val baseSelect = fr"select id, username from player"
+   val baseSelect = fr"select id, name from player"
 
    def select(id: Long): Query0[Player] = (baseSelect ++ fr"where id = $id").query
 
-   def select(name: String): Query0[Player] = sql"select id, username from player where username = $name".query
+   def select(name: String): Query0[Player] = sql"select id, name from player where name = $name".query
 
    def delete_(): Update0 = sql"delete from player where id =${}".update
 
-   def insert_(player: PlayerParam): Update0 = sql"insert into player (username) values (${player.username})".update
+   def insert_(player: PlayerParam): Update0 = sql"insert into player (name) values (${player.name.toLowerCase})".update
 
    def findGames(id: Long): Query0[Game] = sql"""
       select distinct

@@ -7,7 +7,9 @@
         </encoder>
     </appender>
 
-    <root level="${LOGBACK_LOG_LEVEL:-DEBUG}">
+    <root level="${LOGBACK_LOG_LEVEL:-INFO}">
         <appender-ref ref="stdout"/>
     </root>
+
+    <logger name="io.lettuce.core" level="OFF" />
 </configuration>

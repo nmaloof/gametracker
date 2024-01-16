@@ -33,29 +33,9 @@ class AuthRepo(token: TokenAlg, account: AccountAlg, redis: RedisCommands[IO, St
    }
 
    override def logout(token: JwtToken): IO[Unit] = {
-      // redis.del(token.value).void
       for {
-         _       <- logger.info("here I am")
-         keysVal <- redis.get(token.value)
+         _       <- logger.info("Logged out. Deleting key from redis")
+         keysVal <- redis.del(token.value)
       } yield ()
    }
-
-   // override def login(username: String, password: String): IO[JwtToken] = {
-   //    account
-   //       .findAccount(username, password)
-   //       .semiflatMap { act =>
-   //          redis.get(act.username) match {
-   //             case None =>
-   //                token.create.flatTap { t =>
-   //                   IO.apply {
-   //                      redis.addOne((act.toString(), t.value))
-   //                      redis.addOne((t.value, act.toString()))
-   //                   }
-   //                }
-   //             case Some(value) => IO.pure(JwtToken(value))
-   //          }
-   //       }
-   //       .getOrElseF(InvalidUsernameOrPassword(username).raiseError[IO, JwtToken])
-   // }
-
 }

@@ -14,31 +14,31 @@ object Main {
 
    def renderPage(page: Page) = {
       page match
-         case MainPage  => div("This is the Main Pages")
+         case MainPage  => div(MainView.render())
          case LoginPage => div(LoginView.render())
 
    }
 
-   // def main(args: Array[String]): Unit = {
-   //    windowEvents(_.onLoad).foreach { _ =>
-   //       lazy val appContainer    = dom.document.querySelector("#appContainer")
-   //       lazy val navBarContainer = dom.document.querySelector("#navBarContainer")
+   def main(args: Array[String]): Unit = {
+      windowEvents(_.onLoad).foreach { _ =>
+         lazy val appContainer    = dom.document.querySelector("#appContainer")
+         lazy val navBarContainer = dom.document.querySelector("#navBarContainer")
 
-   //       val root = div(
-   //         NavBarComponent.render()
-   //       )
-   //       val appRoot = div(
-   //         h1("Routing Example"),
-   //         child <-- router.currentPageSignal.map(x => {
-   //            println(x)
-   //            renderPage(x)
-   //         })
-   //       )
+         val root = div(
+           NavBarComponent.render()
+         )
+         val appRoot = div(
+           h1("Routing Example"),
+           child <-- router.currentPageSignal.map(x => {
+              println(x)
+              renderPage(x)
+           })
+         )
 
-   //       render(appContainer, appRoot)
-   //       render(navBarContainer, root)
-   //    }(unsafeWindowOwner)
-   // }
+         render(appContainer, appRoot)
+         render(navBarContainer, root)
+      }(unsafeWindowOwner)
+   }
    // def main(args: Array[String]): Unit = {
    //    windowEvents(_.onLoad).foreach { _ =>
    //       lazy val appContainer = dom.document.querySelector("#appContainer")
@@ -57,24 +57,24 @@ object Main {
    //    }(unsafeWindowOwner)
    // }
 
-   def main(args: Array[String]): Unit = {
-      windowEvents(_.onLoad).foreach { _ =>
-         lazy val appContainer = dom.document.querySelector("#appContainer")
-         val appElement        = div(h1("Hello world, my friend!"))
+   // def main(args: Array[String]): Unit = {
+   //    windowEvents(_.onLoad).foreach { _ =>
+   //       lazy val appContainer = dom.document.querySelector("#appContainer")
+   //       val appElement        = div(h1("Hello world, my friend!"))
 
-         val formSubmitted                       = Var[Boolean](false)
-         val searchResults                       = Var[List[MatchView]](List.empty)
-         val (responsesStream, responseReceived) = EventStream.withCallback[FetchResponse[List[MatchView]]]
+   //       val formSubmitted                       = Var[Boolean](false)
+   //       val searchResults                       = Var[List[MatchView]](List.empty)
+   //       val (responsesStream, responseReceived) = EventStream.withCallback[FetchResponse[List[MatchView]]]
 
-         val something = responsesStream.recoverToTry.collect { case Success(response) => response.data }
+   //       val something = responsesStream.recoverToTry.collect { case Success(response) => response.data }
 
-         val root = div(
-           appElement,
-           SearchBox.render(formSubmitted.writer, responseReceived),
-           child <-- formSubmitted.signal.map(a => if !a then emptyNode else MatchViewComponent.render(something.toSignal(List.empty)))
-         )
+   //       val root = div(
+   //         appElement,
+   //         SearchBox.render(formSubmitted.writer, responseReceived),
+   //         child <-- formSubmitted.signal.map(a => if !a then emptyNode else MatchViewComponent.render(something.toSignal(List.empty)))
+   //       )
 
-         render(appContainer, root)
-      }(unsafeWindowOwner)
-   }
+   //       render(appContainer, root)
+   //    }(unsafeWindowOwner)
+   // }
 }

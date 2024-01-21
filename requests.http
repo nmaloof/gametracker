@@ -22,6 +22,7 @@ Authorization: Bearer {{jwtAuthToken}}
 ### ------------------------------------------------------------ Player Routes ------------------------------------------------------------
 GET http://localhost:8080/players/all HTTP/1.1
 Content-Type: application/json
+Origin: http://localhost:8080
 
 
 ###
@@ -29,6 +30,10 @@ GET http://localhost:8080/players/5 HTTP/1.1
 Content-Type: application/json
 
 ### 
+GET http://localhost:8080/players/name/David HTTP/1.1
+Content-Type: application/json
+
+###
 
 POST http://localhost:8080/players/create HTTP/1.1
 Content-Type: application/json

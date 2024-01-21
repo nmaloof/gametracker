@@ -32,7 +32,7 @@ object MatchSQL {
          g.id,
          g.name,
          p.id,
-         p.username,
+         p.name,
          md.team_id,
          md.score
       from match as m

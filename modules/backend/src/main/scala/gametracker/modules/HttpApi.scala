@@ -51,7 +51,7 @@ final class HttpApi(xa: Transactor[IO], config: AppConfig, redis: RedisCommands[
    } andThen { (http: HttpRoutes[IO]) =>
       ErrorAction.httpRoutes[IO](
         http,
-        (req, thr) => logger.error(thr.getMessage())
+        (req, thr) => logger.error(req.toString + thr.getMessage())
       )
    }
 

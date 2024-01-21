@@ -35,7 +35,7 @@ object MatchViewComponent {
            cls := "team",
            div(
              cls := "player",
-             td._2._2.map(x => p(x.username))
+             td._2._2.map(x => p(x.name))
            ),
            div(
              if td._2._1 == topTeamScore then {

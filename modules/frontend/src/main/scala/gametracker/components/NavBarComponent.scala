@@ -8,9 +8,8 @@ object NavBarComponent {
       navTag(
         cls := "navBar",
         ul(
-          li(
-            "Log In"
-          )
+          li(a(href := "/", "Home")),
+          li(a(href := "/login", "Login"))
         )
       )
    }

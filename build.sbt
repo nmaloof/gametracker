@@ -70,10 +70,11 @@ lazy val frontend = project
        "io.circe"      %%% "circe-core"    % "0.14.6",
        "io.circe"      %%% "circe-generic" % "0.14.6",
        "com.raquo"     %%% "waypoint"      % "7.0.0",
-       "org.scalameta" %%% "munit"         % "1.0.0-M10" % Test
+       "org.scalameta" %%% "munit"         % "1.0.0-M10" % Test,
 
-       // "org.http4s" %%% "http4s-dom" % "0.2.9",
-       // "org.http4s" %%% "http4s-ember-client" % "0.23.23",
+       "org.http4s" %%% "http4s-dom" % "0.2.11",
+       "org.http4s" %%% "http4s-ember-client" % "0.23.25",
+       "org.http4s" %%% "http4s-circe" % "0.23.25"
      ),
      scalaJSUseMainModuleInitializer := true,
      scalaJSLinkerConfig ~= {

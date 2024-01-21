@@ -34,7 +34,7 @@ private object PlayerSQL {
 
    def select(id: Long): Query0[Player] = (baseSelect ++ fr"where id = $id").query
 
-   def select(name: String): Query0[Player] = sql"select id, name from player where name = $name".query
+   def select(name: String): Query0[Player] = sql"select id, name from player where lower(name) = $name".query
 
    def delete_(): Update0 = sql"delete from player where id =${}".update
 
